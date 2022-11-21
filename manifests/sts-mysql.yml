@@ -3,36 +3,44 @@ kind: StatefulSet
 metadata:
   name: mysql
   labels:
-    
+    app.kubernetes.io/name: "wordpress-jpk-lab"
+    app.kubernetes.io/instance: "lab6-instance"
+    app.kubernetes.io/component: database
 spec:
-  replicas:
+  replicas: 1
   selector:
     matchLabels:
-      
+      app_name: wordpress-site
+      env: dev  
   serviceName: mysql
   template:
     metadata:
       labels:
-        
+        app_name: wordpress-site
+        env: dev
     spec:
       containers:
-      - image: 
+      - image: mysql:5.6
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
-            
+            secretKeyRef:
+              name: mysql
+              key: password
+              optional: false 
         ports:
         - containerPort: 3306
           name: mysql
         volumeMounts:
-        
+          - mountPath: /var/lib/mysql
+            name: mysql-data
   volumeClaimTemplates:
   - metadata:
       name: mysql-data
     spec:
-      accessModes:
-      storageClassName:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "standard"
       resources:
         requests:
-          storage:
+          storage: 1Gi

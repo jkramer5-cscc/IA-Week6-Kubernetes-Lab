@@ -3,32 +3,40 @@ kind: Deployment
 metadata:
   name: wordpress
   labels:
-    
+    app.kubernetes.io/name: "wordpress-jpk-lab"
+    app.kubernetes.io/component: deployment
 spec:
-  replicas: 
+  replicas: 2
   selector:
     matchLabels:
-      
+      app_name: wordpress-site
+      env: dev 
   strategy:
-    
+    type: Recreate
   template:
     metadata:
       labels:
-        
+        app_name: wordpress-site
+        env: dev
     spec:
       containers:
-      - image: 
+      - image: wordpress:4.9-apache
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
-          
+          value: mysql
         - name: WORDPRESS_DB_PASSWORD
-        
+          valueFrom:
+            secretKeyRef:
+              name: mysql
+              key: password
+              optional: false
         ports:
-        
-          
+          - containerPort: 80
+            name: http
         volumeMounts:
-        
+          - mountPath: /var/www/html
+            name: wordpress
       volumes:
       - name: wordpress
         

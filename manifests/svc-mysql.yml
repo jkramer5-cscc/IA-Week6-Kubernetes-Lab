@@ -3,10 +3,16 @@ kind: Service
 metadata:
   name: mysql
   labels:
-    
+    app.kubernetes.io/name: "wordpress-jpk-lab"
+    app.kubernetes.io/instance: "lab6-instance"
+    app.kubernetes.io/component: database    
 spec:
   ports:
-    
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
   selector:
-    
-  clusterIP: 
+    matchLabels:
+      app_name: wordpress-site
+      env: dev  
+  clusterIP: None

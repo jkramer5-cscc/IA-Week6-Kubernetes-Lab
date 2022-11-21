@@ -3,9 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   name: wordpress
   labels:
-    
+    app.kubernetes.io/name: "wordpress-jpk-lab"
+    app.kuberbetes.io/instance: "lab6-instance"
+    app.kubernetes.io/component: volume 
 spec:
   accessModes:
-
+    - ReadWriteMany
   resources:
-    
+    requests:
+      storage: 1Gi
