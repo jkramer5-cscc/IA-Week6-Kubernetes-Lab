@@ -4,13 +4,12 @@ metadata:
   name: wordpress
   labels:
     app.kubernetes.io/name: "wordpress-jpk-lab"
-    app.kubernetes.io/component: server 
+    app.kubernetes.io/component: server
 spec:
-  type:
+  type: NodePort
   ports:
-  - NodePort: 30180
-    containerPort: 80
+    - port: 30180
+      targetPort: 80
   selector:
-    matchLabels:
       app_name: wordpress-site
-      env: dev 
+      env: dev
